@@ -28,6 +28,11 @@ gem 'puma', '~> 3.7'
 
 # API Framework
 gem 'grape'
+# Authentication process
+gem 'devise'
+
+gem 'grape-active_model_serializers'
+gem 'virtus'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
