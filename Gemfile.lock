@@ -65,6 +65,8 @@ GEM
       railties (>= 4.1.0, < 5.2)
       responders
       warden (~> 1.2.3)
+    doorkeeper (4.2.6)
+      railties (>= 4.2)
     dotenv (2.2.1)
     dotenv-rails (2.2.1)
       dotenv (= 2.2.1)
@@ -201,6 +203,7 @@ PLATFORMS
 DEPENDENCIES
   byebug
   devise
+  doorkeeper
   dotenv-rails
   grape
   grape-active_model_serializers

@@ -19,13 +19,22 @@ module Users
     end
 
     def call
+      token = nil
       user = User.new(
         name: name, email: email, address: address, phone: phone,
         password: password, password_confirmation: password_confirmation
       )
 
-      user.save!
-      success(user)
+      ActiveRecord::Base.transaction do
+        user.save!
+        token = Doorkeeper::AccessToken.create!(
+          resource_owner_id: user.id,
+          use_refresh_token: true, scopes: 'public',
+          expires_in: Doorkeeper.configuration.access_token_expires_in
+        )
+      end
+
+      success(token)
     rescue ActiveRecord::RecordInvalid => e
       return error(response: e.record, title: ERROR_TITLE, code: 422,
                    message: 'User could not be created', errors: e.record.errors)
