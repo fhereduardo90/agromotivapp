@@ -40,6 +40,11 @@ gem 'rolify'
 # OAuth2 Provider
 gem 'doorkeeper'
 
+# AWS SDK
+gem 'aws-sdk', '~> 2'
+
+gem 'paperclip'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
