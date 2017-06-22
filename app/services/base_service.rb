@@ -25,15 +25,13 @@ end
 class ErrorService
   include Virtus.model(strict: true)
 
-  attribute :response, Object, writer: :private
-  attribute :title, String, writer: :private
-  attribute :message, String, writer: :private
-  attribute :errors, Array, writer: :private
-  attribute :code, Integer, writer: :private
+  attribute :response, Object, writer: :private, default: Object.new
+  attribute :title, String, writer: :private, default: ''
+  attribute :message, String, writer: :private, default: ''
+  attribute :errors, Array, writer: :private, default: []
+  attribute :code, Integer, writer: :private, default: 0
 
-  def initialize(
-    options = { response: Object, title: '', message: '', errors: [], code: 0 }
-  )
+  def initialize(options = {})
     self.response = options[:response]
     self.title = options[:title]
     self.message = options[:message]
@@ -73,9 +71,7 @@ class BaseService
     SuccessService.new(response)
   end
 
-  def error(options = {
-    response: response, title: title, message: message, errors: []
-  })
+  def error(options = {})
     ErrorService.new(
       response: options[:response],
       title: options[:title],

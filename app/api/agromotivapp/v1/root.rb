@@ -4,8 +4,11 @@ module Agromotivapp
   module V1
     class Root < Grape::API
       helpers Doorkeeper::Grape::Helpers
-
       version 'v1', using: :path
+      content_type :json, 'application/json'
+
+      default_format :json
+
       mount Agromotivapp::V1::Users
 
       helpers do

@@ -43,8 +43,9 @@ module Agromotivapp
 
             desc 'Update User\'s Information'
             params do
+              optional :image, type: File
               optional :name, allow_blank: false, type: String
-              optional :email, allow_blank: false, type: String
+              optional :email, regexp: /.+@.+/, allow_blank: false, type: String
               optional :address, allow_blank: false, type: String
               optional :phone, allow_blank: false, type: String
               optional :password, allow_blank: false, type: String
@@ -53,12 +54,16 @@ module Agromotivapp
               end
             end
             put do
+              if request.env['CONTENT_TYPE'] == 'application/json'
+                params.except!(:image)
+              end
+
               result = ::Users::UpdateUser.call(current_resource_owner, params)
 
               if result.succeed?
                 status 204
               else
-                error!(result.errors, 422)
+                error!({ message: result.message, errors: result.errors }, 422)
               end
             end
 
