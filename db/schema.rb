@@ -10,10 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170618194509) do
+ActiveRecord::Schema.define(version: 20170621043748) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "assets", force: :cascade do |t|
+    t.string "image_file_name"
+    t.string "image_content_type"
+    t.integer "image_file_size"
+    t.datetime "image_updated_at"
+    t.string "attachable_type"
+    t.bigint "attachable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "deleted", default: false
+    t.index ["attachable_type", "attachable_id"], name: "index_assets_on_attachable_type_and_attachable_id"
+    t.index ["deleted"], name: "index_assets_on_deleted"
+  end
 
   create_table "oauth_access_grants", force: :cascade do |t|
     t.integer "resource_owner_id", null: false
