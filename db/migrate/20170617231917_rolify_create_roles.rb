@@ -7,13 +7,13 @@ class RolifyCreateRoles < ActiveRecord::Migration[5.1]
       t.timestamps
     end
 
-    create_table(:users_roles, :id => false) do |t|
-      t.references :user
+    create_table(:people_roles, :id => false) do |t|
+      t.references :person
       t.references :role
     end
 
     add_index(:roles, :name)
     add_index(:roles, [ :name, :resource_type, :resource_id ])
-    add_index(:users_roles, [ :user_id, :role_id ])
+    add_index(:people_roles, [ :person_id, :role_id ])
   end
 end

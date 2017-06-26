@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170621043748) do
+ActiveRecord::Schema.define(version: 20170626033317) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,23 @@ ActiveRecord::Schema.define(version: 20170621043748) do
     t.boolean "deleted", default: false
     t.index ["attachable_type", "attachable_id"], name: "index_assets_on_attachable_type_and_attachable_id"
     t.index ["deleted"], name: "index_assets_on_deleted"
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_categories_on_name", unique: true
+  end
+
+  create_table "cities", force: :cascade do |t|
+    t.string "name"
+    t.bigint "state_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_cities_on_name"
+    t.index ["state_id"], name: "index_cities_on_state_id"
   end
 
   create_table "oauth_access_grants", force: :cascade do |t|
@@ -69,18 +86,7 @@ ActiveRecord::Schema.define(version: 20170621043748) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
-  create_table "roles", force: :cascade do |t|
-    t.string "name"
-    t.string "resource_type"
-    t.bigint "resource_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
-    t.index ["name"], name: "index_roles_on_name"
-    t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id"
-  end
-
-  create_table "users", force: :cascade do |t|
+  create_table "people", force: :cascade do |t|
     t.string "name"
     t.string "email"
     t.string "address"
@@ -96,18 +102,43 @@ ActiveRecord::Schema.define(version: 20170621043748) do
     t.datetime "last_sign_in_at"
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
-    t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.string "type"
+    t.bigint "state_id"
+    t.bigint "city_id"
+    t.index ["city_id"], name: "index_people_on_city_id"
+    t.index ["reset_password_token"], name: "index_people_on_reset_password_token", unique: true
+    t.index ["state_id"], name: "index_people_on_state_id"
   end
 
-  create_table "users_roles", id: false, force: :cascade do |t|
-    t.bigint "user_id"
+  create_table "people_roles", id: false, force: :cascade do |t|
+    t.bigint "person_id"
     t.bigint "role_id"
-    t.index ["role_id"], name: "index_users_roles_on_role_id"
-    t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
-    t.index ["user_id"], name: "index_users_roles_on_user_id"
+    t.index ["person_id", "role_id"], name: "index_people_roles_on_person_id_and_role_id"
+    t.index ["person_id"], name: "index_people_roles_on_person_id"
+    t.index ["role_id"], name: "index_people_roles_on_role_id"
   end
 
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
+    t.string "resource_type"
+    t.bigint "resource_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
+    t.index ["name"], name: "index_roles_on_name"
+    t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id"
+  end
+
+  create_table "states", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_states_on_name", unique: true
+  end
+
+  add_foreign_key "cities", "states"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
+  add_foreign_key "people", "cities"
+  add_foreign_key "people", "states"
 end
