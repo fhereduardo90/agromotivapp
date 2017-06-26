@@ -200,6 +200,8 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    store_base_sti_class (1.1.0)
+      activerecord (>= 4.0)
     thor (0.19.4)
     thread_safe (0.3.6)
     tzinfo (1.2.3)
@@ -236,6 +238,7 @@ DEPENDENCIES
   rubocop
   spring
   spring-watcher-listen (~> 2.0.0)
+  store_base_sti_class
   tzinfo-data
   virtus
 
