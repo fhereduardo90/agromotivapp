@@ -10,10 +10,19 @@ module Agromotivapp
       default_format :json
 
       mount Agromotivapp::V1::Users
+      mount Agromotivapp::V1::Sellers
+      mount Agromotivapp::V1::States
 
       helpers do
         def current_resource_owner
-          User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
+          return unless doorkeeper_token
+
+          case doorkeeper_token.scopes.first
+          when 'user'
+            Person.find(doorkeeper_token.resource_owner_id)
+          when 'seller'
+            Seller.find(doorkeeper_token.resource_owner_id)
+          end
         end
       end
     end
