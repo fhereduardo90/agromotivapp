@@ -1,11 +1,12 @@
 class Person < ApplicationRecord
   rolify
 
-  has_one :asset, -> { where deleted: false }, as: :attachable
-  has_many :assets, as: :attachable, dependent: :destroy
+  belongs_to :state, optional: true
+  belongs_to :city, optional: true
 
-  validates :email, uniqueness: true, if: :valid_user?
   validates :email, format: Devise::email_regexp
+  validates :state, presence: true, unless: -> { self.city.present? }
+  validates :city, presence: true, unless: -> { self.state.present? }
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -22,13 +23,6 @@ class Person < ApplicationRecord
   end
 
   def assign_default_role
-    add_role(:user) if roles.blank?
-  end
-
-  private
-
-  def valid_user?
-    return false unless email_changed?
-    self.class.name == 'User' && Person.with_role(:user).select(:id).find_by(email: email).present?
+    raise NoImplementedError
   end
 end
