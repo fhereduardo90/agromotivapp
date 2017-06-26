@@ -11,9 +11,16 @@ Doorkeeper.configure do
   end
 
   resource_owner_from_credentials do |routes|
-    user = User.find_for_database_authentication(email: params[:email])
-    if user && user.valid_for_authentication? { user.valid_password?(params[:password]) }
-      user
+    resource_instance = if params[:scope] == 'user'
+                          Person.with_role(:user).find_for_database_authentication(email: params[:email])
+                        elsif params[:scope] == 'seller'
+                          Seller.with_role(:seller).find_for_database_authentication(email: params[:email])
+                        end
+
+    if resource_instance && resource_instance.valid_for_authentication? {
+      resource_instance.valid_password?(params[:password])
+    }
+      resource_instance
     end
   end
 
@@ -61,8 +68,8 @@ Doorkeeper.configure do
   # Define access token scopes for your provider
   # For more information go to
   # https://github.com/doorkeeper-gem/doorkeeper/wiki/Using-Scopes
-  # default_scopes  :public
-  # optional_scopes :write, :update
+  default_scopes :user
+  optional_scopes :admin, :seller
 
   # Change the way client credentials are retrieved from the request object.
   # By default it retrieves first from the `HTTP_AUTHORIZATION` header, then
