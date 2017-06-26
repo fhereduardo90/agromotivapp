@@ -5,9 +5,12 @@ module Agromotivapp
         desc 'Create user'
         params do
           requires :name, allow_blank: false, type: String
-          requires :email, allow_blank: false, type: String
+          requires :email, allow_blank: false, regexp: Devise::email_regexp, type: String
           requires :address, allow_blank: false, type: String
           optional :phone, allow_blank: false, type: String
+          optional :state_id, allow_blank: false, type: Integer
+          optional :city_id, allow_blank: false, type: Integer
+          exactly_one_of :state_id, :city_id
           requires :password, allow_blank: false, type: String
           given :password do
             requires :password_confirmation, allow_blank: false, type: String
@@ -27,7 +30,7 @@ module Agromotivapp
 
         namespace do
           before do
-            doorkeeper_authorize!
+            doorkeeper_authorize! :user
           end
 
           desc 'Return user list'
@@ -45,10 +48,13 @@ module Agromotivapp
             params do
               optional :image, type: File
               optional :name, allow_blank: false, type: String
-              optional :email, regexp: /.+@.+/, allow_blank: false, type: String
+              optional :email, regexp: Devise::email_regexp, allow_blank: false, type: String
               optional :address, allow_blank: false, type: String
               optional :phone, allow_blank: false, type: String
               optional :password, allow_blank: false, type: String
+              optional :state_id, allow_blank: false, type: Integer
+              optional :city_id, allow_blank: false, type: Integer
+              exactly_one_of :state_id, :city_id
               given :password do
                 requires :password_confirmation, allow_blank: false, type: String
               end
