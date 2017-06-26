@@ -26,6 +26,9 @@ module Users
       end
 
       success(current_user)
+    rescue ActiveRecord::RecordInvalid => e
+      return error(response: e.record, title: ERROR_TITLE, code: 422,
+                   message: 'User could not be updated', errors: e.record.errors)
     end
   end
 end
