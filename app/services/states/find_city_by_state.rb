@@ -13,12 +13,12 @@ module States
     def call
       state = State.find_by(id: state_id)
 
-      return error(response: nil, title: ERROR_TITLE, code: 404,
+      return error(response: state, title: ERROR_TITLE, code: 404,
                    message: 'State not found') unless state
 
       city = state.cities.find_by(id: id)
 
-      return error(response: nil, title: ERROR_TITLE, code: 404,
+      return error(response: state, title: ERROR_TITLE, code: 404,
                    message: 'City not found') unless city
 
       success(city)
