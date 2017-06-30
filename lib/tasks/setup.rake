@@ -1,4 +1,26 @@
 namespace :setup do
+  task all: [:categories, :states_and_citites, :units, :create_default_users]
+
+  task create_default_users: :environment do
+    User.create!({ name: Faker::Name.name,
+                   email: 'usertest@test.com',
+                   address: Faker::Address.street_address,
+                   phone: Faker::PhoneNumber.phone_number,
+                   password: 'welcome123',
+                   password_confirmation: 'welcome123',
+                   city: City.first
+                 })
+
+    Seller.create!({ name: Faker::Name.name,
+                   email: 'sellertest@test.com',
+                   address: Faker::Address.street_address,
+                   phone: Faker::PhoneNumber.phone_number,
+                   password: 'welcome123',
+                   password_confirmation: 'welcome123',
+                   city: City.first
+                 })
+  end
+
   task categories: :environment do
     file = File.open("#{Rails.root}/public/test_image.png")
     Category.create!(name: 'Test 1').assets.create!(image: file)
@@ -32,5 +54,9 @@ namespace :setup do
         state_instance.cities.create!(name: city)
       end
     end
+  end
+
+  task units: :environment do
+    Unit.create!([{ name: 'Pounds' }, { name: 'Ounces' }, { name: 'Grams' }, { name: 'Kilograms' }])
   end
 end
