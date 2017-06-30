@@ -12,6 +12,9 @@ module Agromotivapp
       mount Agromotivapp::V1::Users
       mount Agromotivapp::V1::Sellers
       mount Agromotivapp::V1::States
+      mount Agromotivapp::V1::Products
+      mount Agromotivapp::V1::Units
+      mount Agromotivapp::V1::Categories
 
       helpers do
         def current_resource_owner
