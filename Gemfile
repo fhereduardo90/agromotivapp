@@ -44,8 +44,9 @@ gem 'doorkeeper'
 gem 'aws-sdk', '~> 2'
 
 gem 'paperclip'
-
 gem 'store_base_sti_class'
+gem 'money-rails'
+gem 'faker'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
