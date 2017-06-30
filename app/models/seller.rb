@@ -3,6 +3,7 @@ class Seller < Person
            foreign_type: :attachable_type, foreign_key: :attachable_id
   has_one :asset, -> { where attachable_type: 'Seller', deleted: false },
           foreign_type: :attachable_type, foreign_key: :attachable_id
+  has_many :products
 
   validates :email, uniqueness: true, if: :valid_seller?
 
