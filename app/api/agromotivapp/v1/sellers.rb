@@ -24,7 +24,7 @@ module Agromotivapp
           if result.succeed?
             result.response
           else
-            error!(result.errors, 422)
+            error!({ message: result.message, errors: result.errors }, result.code)
           end
         end
 
@@ -64,7 +64,34 @@ module Agromotivapp
               if result.succeed?
                 status 204
               else
-                error!({ message: result.message, errors: result.errors }, 422)
+                error!({ message: result.message, errors: result.errors }, result.code)
+              end
+            end
+
+            namespace :products do
+              desc 'Seller\'s products'
+              get each_serializer: ::Products::ProductSerializer do
+                result = ::Products::ProductsBySeller.call(current_resource_owner)
+
+                if result.succeed?
+                  result.response
+                else
+                  error!({ message: result.message, errors: result.errors }, result.code)
+                end
+              end
+
+              desc 'Seller\'s product detail'
+              params do
+                requires :id, allow_blank: false, type: Integer
+              end
+              get ':id', serializer: ::Products::ProductSerializer do
+                result = ::Products::FindProductBySeller.call(current_resource_owner, params[:id])
+
+                if result.succeed?
+                  result.response
+                else
+                  error!({ message: result.message, errors: result.errors }, result.code)
+                end
               end
             end
           end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170626033317) do
+ActiveRecord::Schema.define(version: 20170628021343) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -118,6 +118,29 @@ ActiveRecord::Schema.define(version: 20170626033317) do
     t.index ["role_id"], name: "index_people_roles_on_role_id"
   end
 
+  create_table "products", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.bigint "category_id"
+    t.bigint "seller_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_products_on_category_id"
+    t.index ["name"], name: "index_products_on_name"
+    t.index ["seller_id"], name: "index_products_on_seller_id"
+  end
+
+  create_table "products_units", force: :cascade do |t|
+    t.bigint "product_id"
+    t.bigint "unit_id"
+    t.integer "price_cents", default: 0, null: false
+    t.string "price_currency", default: "USD", null: false
+    t.integer "quantity", default: 0
+    t.index ["product_id", "unit_id"], name: "index_products_units_on_product_id_and_unit_id", unique: true
+    t.index ["product_id"], name: "index_products_units_on_product_id"
+    t.index ["unit_id"], name: "index_products_units_on_unit_id"
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string "name"
     t.string "resource_type"
@@ -136,9 +159,21 @@ ActiveRecord::Schema.define(version: 20170626033317) do
     t.index ["name"], name: "index_states_on_name", unique: true
   end
 
+  create_table "units", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_units_on_name", unique: true
+  end
+
   add_foreign_key "cities", "states"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "people", "cities"
   add_foreign_key "people", "states"
+  add_foreign_key "products", "categories"
+  add_foreign_key "products", "people", column: "seller_id"
+  add_foreign_key "products_units", "products"
+  add_foreign_key "products_units", "units"
 end

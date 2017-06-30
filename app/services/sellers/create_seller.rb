@@ -21,7 +21,8 @@ module Sellers
       return error(response: e.record, title: ERROR_TITLE, code: 422,
                    message: 'Seller could not be created', errors: e.record.errors)
     rescue => e
-      return error(title: ERROR_TITLE, message: e.message)
+      return error(reponse: e, title: ERROR_TITLE, message: e.message,
+                   code: 422)
     end
   end
 end
