@@ -15,6 +15,8 @@ Doorkeeper.configure do
                           Person.with_role(:user).find_for_database_authentication(email: params[:email])
                         elsif params[:scope] == 'seller'
                           Seller.with_role(:seller).find_for_database_authentication(email: params[:email])
+                        elsif params[:scope] == 'admin'
+                          Admin.find_for_database_authentication(email: params[:email])
                         end
 
     if resource_instance && resource_instance.valid_for_authentication? {

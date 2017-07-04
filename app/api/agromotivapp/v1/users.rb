@@ -24,7 +24,7 @@ module Agromotivapp
           if result.succeed?
             result.response
           else
-            error!(result.errors, 422)
+            error!({ message: result.message, errors: result.errors }, result.code)
           end
         end
 
@@ -39,14 +39,14 @@ module Agromotivapp
           end
 
           namespace :me do
-            desc 'User\'s profile'
+            desc 'User profile'
             get serializer: ::Users::UserSerializer do
               current_resource_owner
             end
 
-            desc 'Update User\'s Information'
+            desc 'Update User Information'
             params do
-              optional :image, type: File
+              optional :image, type: File, allow_blank: false
               optional :name, allow_blank: false, type: String
               optional :email, regexp: Devise::email_regexp, allow_blank: false, type: String
               optional :address, allow_blank: false, type: String
@@ -60,31 +60,26 @@ module Agromotivapp
               end
             end
             put do
+              status 204
+
               if request.env['CONTENT_TYPE'] == 'application/json'
                 params.except!(:image)
               end
 
               result = ::Users::UpdateUser.call(current_resource_owner, params)
-
-              if result.succeed?
-                status 204
-              else
-                error!({ message: result.message, errors: result.errors }, 422)
-              end
+              error!({ message: result.message, errors: result.errors }, result.code) unless result.succeed?
             end
 
-            desc 'Update User\'s Password'
+            desc 'Update User Password'
             params do
               requires :password, allow_blank: false, type: String
               requires :password_confirmation, allow_blank: false, type: String
             end
             put 'password' do
+              status 204
+
               result = ::Users::UpdatePassword.call(current_resource_owner, params)
-              if result.succeed?
-                status 204
-              else
-                error!(result.errors, 422)
-              end
+              error!({ message: result.message, errors: result.errors }, result.code) unless result.succeed?
             end
           end
         end

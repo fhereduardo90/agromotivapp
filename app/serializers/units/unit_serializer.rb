@@ -1,6 +1,6 @@
 module Units
   class UnitSerializer < ActiveModel::Serializer
-    attributes :id, :name, :created_at
+    attributes :id, :name, :description, :created_at
 
     def created_at
       object.created_at.iso8601

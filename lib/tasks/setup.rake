@@ -1,5 +1,5 @@
 namespace :setup do
-  task all: [:categories, :states_and_citites, :units, :create_default_users]
+  task all: [:create_test_admin, :categories, :states_and_citites, :units, :create_default_users]
 
   task create_default_users: :environment do
     User.create!({ name: Faker::Name.name,
@@ -21,11 +21,20 @@ namespace :setup do
                  })
   end
 
+  task create_test_admin: :environment do
+    Admin.create!(
+      name: 'Test Admin',
+      email: 'admintest@test.com',
+      password: 'welcome123',
+      password_confirmation: 'welcome123'
+    )
+  end
+
   task categories: :environment do
     file = File.open("#{Rails.root}/public/test_image.png")
-    Category.create!(name: 'Test 1').assets.create!(image: file)
-    Category.create!(name: 'Test 2').assets.create!(image: file)
-    Category.create!(name: 'Test 3').assets.create!(image: file)
+    Category.create!(name: 'Test 1', admin: Admin.first).assets.create!(image: file)
+    Category.create!(name: 'Test 2', admin: Admin.first).assets.create!(image: file)
+    Category.create!(name: 'Test 3', admin: Admin.first).assets.create!(image: file)
   end
 
   task states_and_citites: :environment do
@@ -57,6 +66,13 @@ namespace :setup do
   end
 
   task units: :environment do
-    Unit.create!([{ name: 'Pounds' }, { name: 'Ounces' }, { name: 'Grams' }, { name: 'Kilograms' }])
+    Unit.create!(
+      [
+        { name: 'Pounds', admin: Admin.last },
+        { name: 'Ounces', admin: Admin.last },
+        { name: 'Grams', admin: Admin.last },
+        { name: 'Kilograms', admin: Admin.last }
+      ]
+    )
   end
 end

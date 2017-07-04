@@ -10,10 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170628021343) do
+ActiveRecord::Schema.define(version: 20170703063312) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "admins", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "email", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.inet "current_sign_in_ip"
+    t.inet "last_sign_in_ip"
+    t.index ["email"], name: "index_admins_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
+  end
 
   create_table "assets", force: :cascade do |t|
     t.string "image_file_name"
@@ -34,6 +52,8 @@ ActiveRecord::Schema.define(version: 20170628021343) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "admin_id"
+    t.index ["admin_id"], name: "index_categories_on_admin_id"
     t.index ["name"], name: "index_categories_on_name", unique: true
   end
 
@@ -164,9 +184,12 @@ ActiveRecord::Schema.define(version: 20170628021343) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "admin_id"
+    t.index ["admin_id"], name: "index_units_on_admin_id"
     t.index ["name"], name: "index_units_on_name", unique: true
   end
 
+  add_foreign_key "categories", "admins"
   add_foreign_key "cities", "states"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
@@ -176,4 +199,5 @@ ActiveRecord::Schema.define(version: 20170628021343) do
   add_foreign_key "products", "people", column: "seller_id"
   add_foreign_key "products_units", "products"
   add_foreign_key "products_units", "units"
+  add_foreign_key "units", "admins"
 end

@@ -16,6 +16,10 @@ module Agromotivapp
       mount Agromotivapp::V1::Units
       mount Agromotivapp::V1::Categories
 
+      mount Agromotivapp::V1::Cms::Admins
+      mount Agromotivapp::V1::Cms::Categories
+      mount Agromotivapp::V1::Cms::Units
+
       helpers do
         def current_resource_owner
           return unless doorkeeper_token
@@ -25,6 +29,8 @@ module Agromotivapp
             Person.find(doorkeeper_token.resource_owner_id)
           when 'seller'
             Seller.find(doorkeeper_token.resource_owner_id)
+          when 'admin'
+            Admin.find(doorkeeper_token.resource_owner_id)
           end
         end
       end
