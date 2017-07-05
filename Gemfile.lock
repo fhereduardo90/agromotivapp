@@ -102,6 +102,8 @@ GEM
     grape-active_model_serializers (1.5.1)
       active_model_serializers (>= 0.10.0)
       grape (>= 0.8.0)
+    grape-swagger (0.27.2)
+      grape (>= 0.16.2)
     hashie (3.5.5)
     i18n (0.8.4)
     ice_nine (0.11.2)
@@ -230,6 +232,9 @@ GEM
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
+    wine_bouncer (1.0.1)
+      doorkeeper (>= 1.4, < 4.3)
+      grape (~> 0.10, < 1.0)
 
 PLATFORMS
   ruby
@@ -243,6 +248,7 @@ DEPENDENCIES
   faker
   grape
   grape-active_model_serializers
+  grape-swagger
   listen (>= 3.0.5, < 3.2)
   money-rails
   paperclip
@@ -256,6 +262,7 @@ DEPENDENCIES
   store_base_sti_class
   tzinfo-data
   virtus
+  wine_bouncer (~> 1.0.1)
 
 RUBY VERSION
    ruby 2.4.0p0

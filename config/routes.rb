@@ -8,5 +8,7 @@ Rails.application.routes.draw do
     end
   end
 
+  get '/apidoc', to: redirect('/swagger/index.html?url=/v1/swagger_doc')
+
   mount Agromotivapp::API => '/'
 end
