@@ -16,7 +16,7 @@ module Agromotivapp
             requires :password_confirmation, allow_blank: false, type: String
           end
         end
-        post serializer: ::Tokens::AccessTokenSerializer, include: 'city.state' do
+        post serializer: ::Tokens::AccessTokenSerializer do
           status 201
 
           result = ::Users::CreateUser.call(params)

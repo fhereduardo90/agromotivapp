@@ -1,6 +1,6 @@
 module Users
   class UserSerializer < ActiveModel::Serializer
-    attributes :name, :email, :address, :phone, :avatar, :created_at
+    attributes :id, :name, :email, :address, :phone, :avatar, :created_at
 
     belongs_to :city, serializer: ::States::CitySerializer
     belongs_to :state, serializer: ::States::StateSerializer

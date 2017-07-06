@@ -10,6 +10,7 @@ class Asset < ApplicationRecord
                        presence: true
 
   validates :attachable_id, uniqueness: {
+    scope: :attachable_type,
     conditions: proc { where('attachable_type IN (?) AND deleted = ?', UNIQUE_ATTACHABLE_CLASSES, false) }
   }, unless: proc { |a| a.deleted == true }
 

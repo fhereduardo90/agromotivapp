@@ -37,8 +37,6 @@ module Agromotivapp
     class Root < Grape::API
       helpers Doorkeeper::Grape::Helpers
       version 'v1', using: :path
-      content_type :json, 'application/json'
-
       default_format :json
 
       before do
@@ -57,6 +55,8 @@ module Agromotivapp
       mount Agromotivapp::V1::Cms::Admins
       mount Agromotivapp::V1::Cms::Categories
       mount Agromotivapp::V1::Cms::Units
+      mount Agromotivapp::V1::Cms::Sellers
+      mount Agromotivapp::V1::Cms::Users
 
       add_swagger_documentation mount_path: '/swagger_doc',
                                 in: 'json',

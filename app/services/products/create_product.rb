@@ -42,7 +42,7 @@ module Products
           product.assets.create!(images_parsed)
         end
 
-        success
+        success(product)
       end
     rescue ActiveRecord::RecordInvalid => e
       return error(response: e.record, title: ERROR_TITLE, code: 422,

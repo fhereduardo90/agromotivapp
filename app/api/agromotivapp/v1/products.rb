@@ -3,10 +3,6 @@ module Agromotivapp
     class Products < Root
       namespace :products do
         namespace do
-          before do
-            doorkeeper_authorize! :seller, :user
-          end
-
           desc 'Product List'
           get each_serializer: ::Products::ProductSerializer do
             Product.all
@@ -23,22 +19,6 @@ module Agromotivapp
               result.response
             else
               error!({ message: result.message, errors: result.errors }, result.code)
-            end
-          end
-
-          desc 'Update Product'
-          params do
-            requires :id, allow_blank: false, type: Integer
-            optional :name, allow_blank: false, type: String
-            optional :category_id, allow_blank: false, type: Integer
-            optional :description, allow_blank: false, type: String
-            optional :images, type: Array do
-              requires :file, type: File, allow_blank: false
-            end
-            optional :units, type: Array do
-              requires :unit_id, type: Integer, allow_blank: false
-              requires :price, type: BigDecimal, allow_blank: false
-              requires :quantity, allow_blank: false, type: Integer
             end
           end
         end
@@ -63,10 +43,11 @@ module Agromotivapp
             end
           end
           post do
+            status 201
             result = ::Products::CreateProduct.call(current_resource_owner, params)
 
             if result.succeed?
-              status 201
+              result.response
             else
               error!({ message: result.message, errors: result.errors }, result.code)
             end
