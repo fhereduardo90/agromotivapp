@@ -1,10 +1,12 @@
 require 'doorkeeper/grape/helpers'
 require 'grape-swagger'
+require 'grape-active_model_serializers'
 
 module Agromotivapp
   module V1
     class Oauth < Grape::API
       format :json
+      formatter :json, Grape::Formatter::ActiveModelSerializers
       content_type :json, 'application/json'
       default_format :json
 
