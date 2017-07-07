@@ -48,7 +48,7 @@ gem 'store_base_sti_class'
 gem 'money-rails'
 gem 'faker'
 gem 'grape-swagger'
-gem 'wine_bouncer', '~> 1.0.1'
+gem 'rack-cors', require: 'rack/cors'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

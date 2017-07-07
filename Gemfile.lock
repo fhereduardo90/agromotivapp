@@ -158,6 +158,7 @@ GEM
     rack (2.0.3)
     rack-accept (0.4.5)
       rack (>= 0.4)
+    rack-cors (0.4.1)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (5.1.1)
@@ -232,9 +233,6 @@ GEM
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
-    wine_bouncer (1.0.1)
-      doorkeeper (>= 1.4, < 4.3)
-      grape (~> 0.10, < 1.0)
 
 PLATFORMS
   ruby
@@ -254,6 +252,7 @@ DEPENDENCIES
   paperclip
   pg (~> 0.18)
   puma (~> 3.7)
+  rack-cors
   rails (~> 5.1.1)
   rolify
   rubocop
@@ -262,7 +261,6 @@ DEPENDENCIES
   store_base_sti_class
   tzinfo-data
   virtus
-  wine_bouncer (~> 1.0.1)
 
 RUBY VERSION
    ruby 2.4.0p0
