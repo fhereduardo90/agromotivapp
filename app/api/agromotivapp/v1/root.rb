@@ -57,6 +57,7 @@ module Agromotivapp
       mount Agromotivapp::V1::Cms::Units
       mount Agromotivapp::V1::Cms::Sellers
       mount Agromotivapp::V1::Cms::Users
+      mount Agromotivapp::V1::Cms::Products
 
       add_swagger_documentation mount_path: '/swagger_doc',
                                 in: 'json',
