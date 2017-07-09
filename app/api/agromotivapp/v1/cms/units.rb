@@ -30,11 +30,8 @@ module Agromotivapp
               end
             end
 
-            namespace ':id' do
+            route_param :id, allow_blank: false, type: Integer do
               desc 'Unit Detail'
-              params do
-                requires :id, allow_blank: false, type: Integer
-              end
               get serializer: ::Cms::Units::UnitSerializer do
                 result = ::Units::FindUnit.call(params[:id])
 
@@ -47,7 +44,6 @@ module Agromotivapp
 
               desc 'Update Unit'
               params do
-                requires :id, allow_blank: false, type: Integer
                 optional :name, allow_blank: false, type: String
                 optional :description, allow_blank: false, type: String
               end
@@ -56,11 +52,18 @@ module Agromotivapp
 
                 result = ::Cms::Units::UpdateUnit.call(current_resource_owner, params)
 
-                if result.succeed?
-                  result.response
-                else
-                  error!({ message: result.message, errors: result.errors }, result.code)
-                end
+                error!({ message: result.message, errors: result.errors },
+                       result.code) unless result.succeed?
+              end
+
+              desc 'Delete Unit'
+              delete do
+                status 204
+
+                result = ::Cms::Units::DeleteUnit.call(params[:id])
+
+                error!({ message: result.message, errors: result.errors },
+                       result.code) unless result.succeed?
               end
             end
           end

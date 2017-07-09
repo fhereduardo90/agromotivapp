@@ -69,7 +69,7 @@ module Agromotivapp
             end
 
             namespace :products do
-              desc 'Seller\'s products'
+              desc 'Seller products'
               get each_serializer: ::Products::ProductSerializer do
                 result = ::Products::ProductsBySeller.call(current_resource_owner)
 
@@ -80,17 +80,77 @@ module Agromotivapp
                 end
               end
 
-              desc 'Seller\'s product detail'
+              desc 'Create Product'
               params do
-                requires :id, allow_blank: false, type: Integer
+                requires :name, allow_blank: false, type: String
+                requires :category_id, allow_blank: false, type: Integer
+                optional :description, allow_blank: false, type: String
+                optional :images, type: Array do
+                  requires :file, type: File, allow_blank: false
+                end
+                requires :units, type: Array do
+                  requires :unit_id, type: Integer, allow_blank: false
+                  requires :price, type: BigDecimal, allow_blank: false
+                  requires :quantity, allow_blank: false, type: Integer
+                end
               end
-              get ':id', serializer: ::Products::ProductSerializer do
-                result = ::Products::FindProductBySeller.call(current_resource_owner, params[:id])
+              post serializer: ::Products::ProductSerializer do
+                status 201
+                result = ::Products::CreateProduct.call(current_resource_owner, params)
 
                 if result.succeed?
                   result.response
                 else
                   error!({ message: result.message, errors: result.errors }, result.code)
+                end
+              end
+
+              route_param :id, allow_blank: false, type: Integer do
+                desc 'Update Product'
+                params do
+                  optional :name, allow_blank: false, type: String
+                  optional :category_id, allow_blank: false, type: Integer
+                  optional :description, allow_blank: false, type: String
+                  optional :images, type: Array do
+                    requires :file, type: File, allow_blank: false
+                  end
+                  optional :units, type: Array do
+                    requires :unit_id, type: Integer, allow_blank: false
+                    requires :price, type: BigDecimal, allow_blank: false
+                    requires :quantity, allow_blank: false, type: Integer
+                  end
+                end
+                put do
+                  status 204
+
+                  result = ::Products::UpdateProduct.call(current_resource_owner, params)
+
+                  error!({ message: result.message, errors: result.errors },
+                         result.code) unless result.succeed?
+                end
+
+                desc 'Seller product detail'
+                params do
+                  requires :id, allow_blank: false, type: Integer
+                end
+                get serializer: ::Products::ProductSerializer do
+                  result = ::Products::FindProductBySeller.call(current_resource_owner, params[:id])
+
+                  if result.succeed?
+                    result.response
+                  else
+                    error!({ message: result.message, errors: result.errors }, result.code)
+                  end
+                end
+
+                desc 'Delete Product'
+                delete do
+                  status 204
+
+                  result = ::Products::DeleteProduct.call(current_resource_owner, params[:id])
+
+                  error!({ message: result.message, errors: result.errors },
+                         result.code) unless result.succeed?
                 end
               end
             end

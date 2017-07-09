@@ -1,9 +1,9 @@
 class Seller < Person
   has_many :assets, -> { where attachable_type: 'Seller' },
-           foreign_type: :attachable_type, foreign_key: :attachable_id
+           foreign_type: :attachable_type, foreign_key: :attachable_id, dependent: :destroy
   has_one :asset, -> { where attachable_type: 'Seller', deleted: false },
-          foreign_type: :attachable_type, foreign_key: :attachable_id
-  has_many :products
+          foreign_type: :attachable_type, foreign_key: :attachable_id, dependent: :destroy
+  has_many :products, dependent: :destroy
 
   validates :email, uniqueness: true, if: :valid_seller?
 

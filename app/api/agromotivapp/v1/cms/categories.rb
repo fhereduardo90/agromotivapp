@@ -35,11 +35,8 @@ module Agromotivapp
               end
             end
 
-            namespace ':id' do
+            route_param :id, allow_blank: false, type: Integer do
               desc 'Category Detail'
-              params do
-                requires :id, allow_blank: false, type: Integer
-              end
               get serializer: ::Cms::Categories::CategorySerializer do
                 result = ::Categories::FindCategory.call(params[:id])
 
@@ -52,7 +49,6 @@ module Agromotivapp
 
               desc 'Update Category'
               params do
-                requires :id, allow_blank: false, type: Integer
                 optional :name, type: String, allow_blank: false
                 optional :image, type: File, allow_blank: false
                 optional :description, type: String, allow_blank: false
@@ -66,11 +62,18 @@ module Agromotivapp
 
                 result = ::Cms::Categories::UpdateCategory.call(current_resource_owner, params)
 
-                if result.succeed?
-                  result.response
-                else
-                  error!({ message: result.message, errors: result.errors }, result.code)
-                end
+                error!({ message: result.message, errors: result.errors },
+                       result.code) unless result.succeed?
+              end
+
+              desc 'Delete Category'
+              delete do
+                status 204
+
+                result = ::Cms::Categories::DeleteCategory.call(params[:id])
+
+                error!({ message: result.message, errors: result.errors },
+                       result.code) unless result.succeed?
               end
             end
           end

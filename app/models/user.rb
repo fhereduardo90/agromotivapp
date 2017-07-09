@@ -1,8 +1,8 @@
 class User < Person
   has_many :assets, -> { where attachable_type: 'User' },
-           foreign_type: :attachable_type, foreign_key: :attachable_id
+           foreign_type: :attachable_type, foreign_key: :attachable_id, dependent: :destroy
   has_one :asset,  -> { where attachable_type: 'User', deleted: false },
-          foreign_type: :attachable_type, foreign_key: :attachable_id
+          foreign_type: :attachable_type, foreign_key: :attachable_id, dependent: :destroy
 
   validates :email, uniqueness: true, if: :valid_user?
 
