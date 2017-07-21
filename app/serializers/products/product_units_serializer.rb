@@ -1,6 +1,6 @@
 module Products
   class ProductUnitsSerializer < ActiveModel::Serializer
-    attributes :quantity, :price, :unit
+    attributes :quantity, :price, :unit, :name
 
     def price
       object.price.format

@@ -1,6 +1,5 @@
 module Cms::Users
   class UpdateUser < ::BaseService
-    attribute :current_user, User, writer: :private
     attribute :id, Integer, writer: :private
     attribute :user_params, Hash, writer: :private
     attribute :image, Tempfile, writer: :private, required: false

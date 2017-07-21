@@ -54,7 +54,7 @@ module Agromotivapp
                 optional :phone, allow_blank: false, type: String
                 optional :state_id, allow_blank: false, type: Integer
                 optional :city_id, allow_blank: false, type: Integer
-                exactly_one_of :state_id, :city_id
+                mutually_exclusive :state_id, :city_id
                 optional :password, allow_blank: false, type: String
                 given :password do
                   requires :password_confirmation, allow_blank: false, type: String

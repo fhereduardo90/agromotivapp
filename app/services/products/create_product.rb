@@ -30,7 +30,8 @@ module Products
             {
               unit_id: unit['unit_id'],
               price: unit['price'],
-              quantity: unit['quantity']
+              quantity: unit['quantity'],
+              name: unit['name']
             }
           }
           product.products_units.create!(units_parsed)

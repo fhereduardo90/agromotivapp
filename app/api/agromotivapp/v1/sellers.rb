@@ -92,6 +92,7 @@ module Agromotivapp
                   requires :unit_id, type: Integer, allow_blank: false
                   requires :price, type: BigDecimal, allow_blank: false
                   requires :quantity, allow_blank: false, type: Integer
+                  requires :name, allow_blank: false, type: String
                 end
               end
               post serializer: ::Products::ProductSerializer do
@@ -118,6 +119,7 @@ module Agromotivapp
                     requires :unit_id, type: Integer, allow_blank: false
                     requires :price, type: BigDecimal, allow_blank: false
                     requires :quantity, allow_blank: false, type: Integer
+                    requires :name, allow_blank: false, type: String
                   end
                 end
                 put do
