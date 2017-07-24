@@ -7,6 +7,7 @@ module Products
     end
 
     def unit
+      return unless object.unit
       ActiveModelSerializers::SerializableResource.new(
         object.unit,
         serializer: ::Units::UnitSerializer

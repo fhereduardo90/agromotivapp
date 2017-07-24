@@ -9,7 +9,7 @@ module Cms
 
       def initialize(options = {})
         self.seller_id = options[:seller_id]
-        self.product_id = options[:product_id]
+        self.product_id = options[:id]
         self.product_params = options.except!(:seller_id, :product_id)
       end
 

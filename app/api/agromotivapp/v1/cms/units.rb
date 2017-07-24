@@ -9,7 +9,7 @@ module Agromotivapp
             end
 
             desc 'Units List'
-            get each_serializer: ::Cms::Units::UnitSerializer do
+            get each_serializer: ::Cms::Units::UnitAdminSerializer do
               Unit.all
             end
 
@@ -18,7 +18,7 @@ module Agromotivapp
               requires :name, allow_blank: false, type: String
               optional :description, allow_blank: false, type: String
             end
-            post serializer: ::Cms::Units::UnitSerializer do
+            post serializer: ::Cms::Units::UnitAdminSerializer do
               status 201
 
               result = ::Cms::Units::CreateUnit.call(current_resource_owner, params)
@@ -32,7 +32,7 @@ module Agromotivapp
 
             route_param :id, allow_blank: false, type: Integer do
               desc 'Unit Detail'
-              get serializer: ::Cms::Units::UnitSerializer do
+              get serializer: ::Cms::Units::UnitAdminSerializer do
                 result = ::Units::FindUnit.call(params[:id])
 
                 if result.succeed?
