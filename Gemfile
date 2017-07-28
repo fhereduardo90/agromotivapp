@@ -27,7 +27,7 @@ gem 'puma', '~> 3.7'
 # gem 'rack-cors'
 
 # API Framework
-gem 'grape'
+gem 'grape', '~> 1.0.0'
 # Authentication process
 gem 'devise'
 
