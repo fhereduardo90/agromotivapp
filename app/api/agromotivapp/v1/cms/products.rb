@@ -54,10 +54,8 @@ module Agromotivapp::V1::Cms
               requires :name, allow_blank: false, type: String
               requires :category_id, allow_blank: false, type: Integer
               optional :description, allow_blank: false, type: String
-              optional :images, type: Array do
-                requires :file, type: File, allow_blank: false
-              end
-              requires :units, type: Array do
+              optional :images, type: Array[File], allow_blank: false
+              group :units, type: Array, allow_blank: false do
                 requires :unit_id, type: Integer, allow_blank: false
                 requires :price, type: BigDecimal, allow_blank: false
                 requires :quantity, allow_blank: false, type: Integer
@@ -66,6 +64,11 @@ module Agromotivapp::V1::Cms
             end
             post serializer: ::Products::ProductSerializer do
               status 201
+
+              if request.env['CONTENT_TYPE'] == 'application/json'
+                params.except!(:image)
+              end
+
               result = ::Cms::Products::CreateProduct.call(params)
 
               if result.succeed?
@@ -92,10 +95,8 @@ module Agromotivapp::V1::Cms
                 optional :name, allow_blank: false, type: String
                 optional :category_id, allow_blank: false, type: Integer
                 optional :description, allow_blank: false, type: String
-                optional :images, type: Array do
-                  requires :file, type: File, allow_blank: false
-                end
-                optional :units, type: Array do
+                optional :images, type: Array[File], allow_blank: false
+                group :units, type: Array, allow_blank: false do
                   requires :unit_id, type: Integer, allow_blank: false
                   requires :price, type: BigDecimal, allow_blank: false
                   requires :quantity, allow_blank: false, type: Integer
@@ -105,10 +106,50 @@ module Agromotivapp::V1::Cms
               put do
                 status 204
 
+                if request.env['CONTENT_TYPE'] == 'application/json'
+                  params.except!(:image)
+                end
+
                 result = ::Cms::Products::UpdateProduct.call(params)
 
                 error!({ message: result.message, errors: result.errors },
                        result.code) unless result.succeed?
+              end
+            end
+
+            route_param :product_id, allow_blank: false, type: Integer do
+              namespace :images do
+                desc 'Add new Product Image'
+                params do
+                  requires :image, type: File, allow_blank: false
+                end
+                post serializer: ::Products::ProductSerializer do
+                  status 201
+
+                  result = ::Cms::Products::AddNewImage.call(params)
+
+                  if result.succeed?
+                    result.response
+                  else
+                    error!({ message: result.message, errors: result.errors }, result.code)
+                  end
+                end
+
+                desc 'Delete Product Image'
+                params do
+                  requires :id, type: Integer, allow_blank: false
+                end
+                delete ':id' do
+                  status 204
+
+                  result = ::Cms::Products::DeleteImage.call(params)
+
+                  if result.succeed?
+                    result.response
+                  else
+                    error!({ message: result.message, errors: result.errors }, result.code)
+                  end
+                end
               end
             end
           end

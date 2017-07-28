@@ -44,7 +44,7 @@ module Cms
           end
           unless images.blank?
             images_parsed = images.map{ |image|
-              { image: ActionDispatch::Http::UploadedFile.new(image['file']) }
+              { image: ActionDispatch::Http::UploadedFile.new(image) }
             }
             product.assets.create!(images_parsed)
           end
