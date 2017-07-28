@@ -1,14 +1,14 @@
 module Cms
   module Admins
-    class UpdateAdmin < ::BaseService
+    class DeleteAdmin < ::BaseService
+      attribute :current_admin, Admin, writer: :private
       attribute :id, Integer, writer: :private
-      attribute :admin_params, Hash, writer: :private
 
       ERROR_TITLE = 'Admin Error'.freeze
 
-      def initialize(admin_params = {})
-        self.id = admin_params[:id]
-        self.admin_params = admin_params.except(:id)
+      def initialize(current_admin, id)
+        self.current_admin = current_admin
+        self.id = id
       end
 
       def call
@@ -17,10 +17,13 @@ module Cms
         return error(response: admin, title: ERROR_TITLE, code: 404,
                      message: 'Admin not found') unless admin
 
-        success admin.update!(admin_params)
+        return error(response: admin, title: ERROR_TITLE, code: 422,
+                     message: 'You cannot delete your own account') if current_admin.id == id
+
+        success admin.destroy!
       rescue ActiveRecord::RecordInvalid => e
         return error(response: e.record, title: ERROR_TITLE, code: 422,
-                     message: 'Admin could not be updated', errors: e.record.errors)
+                     message: 'Admin could not be deleted', errors: e.record.errors)
       rescue => e
         return error(reponse: e, title: ERROR_TITLE, message: e.message, code: 422)
       end

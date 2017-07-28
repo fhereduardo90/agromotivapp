@@ -34,16 +34,43 @@ module Agromotivapp
               Admin.all
             end
 
-            params do
-              requires :id, type: Integer, allow_blank: false
-            end
-            get ':id', requirements: { id: /[0-9]*/ }, serializer: ::Cms::Admins::AdminSerializer do
-              result = ::Cms::Admins::FindAdmin.call(params[:id])
+            route_param :id, type: Integer, allow_blank: false, requirements: { id: /[0-9]*/ } do
+              get serializer: ::Cms::Admins::AdminSerializer do
+                result = ::Cms::Admins::FindAdmin.call(params[:id])
 
-              if result.succeed?
-                result.response
-              else
-                error!({ message: result.message, errors: result.errors }, result.code)
+                if result.succeed?
+                  result.response
+                else
+                  error!({ message: result.message, errors: result.errors }, result.code)
+                end
+              end
+
+              desc 'Update Admin'
+              params do
+                requires :name, allow_blank: false, type: String
+                requires :email, allow_blank: false, regexp: Devise::email_regexp, type: String
+                requires :password, allow_blank: false, type: String
+                given :password do
+                  requires :password_confirmation, allow_blank: false, type: String
+                end
+              end
+              put do
+                status 204
+
+                result = ::Cms::Admins::UpdateAdmin.call(params)
+
+                error!({ message: result.message, errors: result.errors },
+                       result.code) unless result.succeed?
+              end
+
+              desc 'Delete Admin'
+              delete do
+                status 204
+
+                result = ::Cms::Admins::DeleteAdmin.call(current_resource_owner, params[:id])
+
+                error!({ message: result.message, errors: result.errors },
+                       result.code) unless result.succeed?
               end
             end
 
@@ -65,7 +92,7 @@ module Agromotivapp
               put do
                 status 204
 
-                result = ::Cms::Admins::UpdateAdmin.call(current_resource_owner, params)
+                result = ::Cms::Admins::UpdateCurrentAdmin.call(current_resource_owner, params)
                 error!({ message: result.message, errors: result.errors }, result.code) unless result.succeed?
               end
             end
