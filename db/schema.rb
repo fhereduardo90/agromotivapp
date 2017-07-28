@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170720231542) do
+ActiveRecord::Schema.define(version: 20170728230829) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -157,7 +157,6 @@ ActiveRecord::Schema.define(version: 20170720231542) do
     t.string "price_currency", default: "USD", null: false
     t.integer "quantity", default: 0
     t.string "name"
-    t.index ["product_id", "unit_id"], name: "index_products_units_on_product_id_and_unit_id", unique: true
     t.index ["product_id"], name: "index_products_units_on_product_id"
     t.index ["unit_id"], name: "index_products_units_on_unit_id"
   end
