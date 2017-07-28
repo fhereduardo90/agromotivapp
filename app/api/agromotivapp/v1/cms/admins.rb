@@ -37,7 +37,7 @@ module Agromotivapp
             params do
               requires :id, type: Integer, allow_blank: false
             end
-            get ':id', serializer: ::Cms::Admins::AdminSerializer do
+            get ':id', requirements: { id: /[0-9]*/ }, serializer: ::Cms::Admins::AdminSerializer do
               result = ::Cms::Admins::FindAdmin.call(params[:id])
 
               if result.succeed?
