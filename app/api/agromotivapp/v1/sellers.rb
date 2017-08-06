@@ -78,7 +78,7 @@ module Agromotivapp
                 result = ::Products::ProductsBySeller.call(current_resource_owner)
 
                 if result.succeed?
-                  result.response.page(params[:page]).per(params[:per_page])
+                  paginate result.response.page(params[:page]).per(params[:per_page])
                 else
                   error!({ message: result.message, errors: result.errors }, result.code)
                 end

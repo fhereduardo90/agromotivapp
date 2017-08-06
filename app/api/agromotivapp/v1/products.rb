@@ -9,7 +9,7 @@ module Agromotivapp
             optional :per_page, type: Integer, allow_blank: false
           end
           get each_serializer: ::Products::ProductSerializer do
-            Product.page(params[:page]).per(params[:per_page])
+            paginate Product.page(params[:page]).per(params[:per_page])
           end
 
           desc 'Product Detail'

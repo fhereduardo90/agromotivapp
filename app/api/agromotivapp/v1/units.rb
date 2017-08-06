@@ -12,7 +12,7 @@ module Agromotivapp
           optional :per_page, type: Integer, allow_blank: false
         end
         get each_serializer: ::Units::UnitSerializer do
-          Unit.page(params[:page]).per(params[:per_page])
+          paginate Unit.page(params[:page]).per(params[:per_page])
         end
 
         params do

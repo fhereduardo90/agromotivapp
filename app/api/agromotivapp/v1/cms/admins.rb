@@ -35,7 +35,7 @@ module Agromotivapp
               optional :per_page, type: Integer
             end
             get each_serializer: ::Cms::Admins::AdminSerializer do
-              Admin.page(params[:page]).per(params[:per_page])
+              paginate Admin.page(params[:page]).per(params[:per_page])
             end
 
             route_param :id, type: Integer, allow_blank: false, requirements: { id: /[0-9]*/ } do

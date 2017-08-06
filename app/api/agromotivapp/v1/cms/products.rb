@@ -12,7 +12,7 @@ module Agromotivapp::V1::Cms
           optional :per_page, type: Integer, allow_blank: false
         end
         get each_serializer: ::Products::ProductSerializer do
-          Product.page(params[:page]).per(params[:per_page])
+          paginate Product.page(params[:page]).per(params[:per_page])
         end
 
         route_param :id, allow_blank: false, type: Integer do
@@ -51,7 +51,7 @@ module Agromotivapp::V1::Cms
               result = ::Cms::Products::ProductsBySeller.call(params[:seller_id])
 
               if result.succeed?
-                result.response.page(params[:page]).per(params[:per_page])
+                paginate result.response.page(params[:page]).per(params[:per_page])
               else
                 error!({ message: result.message, errors: result.errors }, result.code)
               end
