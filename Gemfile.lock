@@ -43,6 +43,7 @@ GEM
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
+    api-pagination (4.6.3)
     arel (8.0.0)
     ast (2.3.0)
     aws-sdk (2.9.42)
@@ -244,6 +245,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  api-pagination
   aws-sdk (~> 2)
   byebug
   devise
@@ -273,4 +275,4 @@ RUBY VERSION
    ruby 2.4.0p0
 
 BUNDLED WITH
-   1.15.1
+   1.15.3
