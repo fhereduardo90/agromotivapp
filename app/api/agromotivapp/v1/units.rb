@@ -7,8 +7,12 @@ module Agromotivapp
         end
 
         desc 'Units List'
+        params do
+          optional :page, type: Integer, allow_blank: false
+          optional :per_page, type: Integer, allow_blank: false
+        end
         get each_serializer: ::Units::UnitSerializer do
-          Unit.all
+          Unit.page(params[:page]).per(params[:per_page])
         end
 
         params do

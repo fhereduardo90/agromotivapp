@@ -39,7 +39,7 @@ module Agromotivapp
               current_resource_owner
             end
 
-            desc 'Update seller\'s profile'
+            desc 'Update seller profile'
             params do
               optional :image, type: File
               optional :name, allow_blank: false, type: String
@@ -70,11 +70,15 @@ module Agromotivapp
 
             namespace :products do
               desc 'Seller products'
+              params do
+                optional :page, type: Integer, allow_blank: false
+                optional :per_page, type: Integer, allow_blank: false
+              end
               get each_serializer: ::Products::ProductSerializer do
                 result = ::Products::ProductsBySeller.call(current_resource_owner)
 
                 if result.succeed?
-                  result.response
+                  result.response.page(params[:page]).per(params[:per_page])
                 else
                   error!({ message: result.message, errors: result.errors }, result.code)
                 end
@@ -132,9 +136,6 @@ module Agromotivapp
                 end
 
                 desc 'Seller product detail'
-                params do
-                  requires :id, allow_blank: false, type: Integer
-                end
                 get serializer: ::Products::ProductSerializer do
                   result = ::Products::FindProductBySeller.call(current_resource_owner, params[:id])
 

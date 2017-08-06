@@ -33,10 +33,10 @@ module Agromotivapp
             doorkeeper_authorize! :user
           end
 
-          desc 'Return user list'
-          get each_serializer: ::Users::UserSerializer, include: '**' do
-            User.all
-          end
+          # desc 'Return user list'
+          # get each_serializer: ::Users::UserSerializer, include: '**' do
+          #   User.all
+          # end
 
           namespace :me do
             desc 'User profile'
@@ -79,7 +79,8 @@ module Agromotivapp
               status 204
 
               result = ::Users::UpdatePassword.call(current_resource_owner, params)
-              error!({ message: result.message, errors: result.errors }, result.code) unless result.succeed?
+              error!({ message: result.message, errors: result.errors },
+                     result.code) unless result.succeed?
             end
           end
         end

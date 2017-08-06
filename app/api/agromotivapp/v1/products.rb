@@ -4,8 +4,12 @@ module Agromotivapp
       namespace :products do
         namespace do
           desc 'Product List'
+          params do
+            optional :page, type: Integer, allow_blank: false
+            optional :per_page, type: Integer, allow_blank: false
+          end
           get each_serializer: ::Products::ProductSerializer do
-            Product.all
+            Product.page(params[:page]).per(params[:per_page])
           end
 
           desc 'Product Detail'
