@@ -30,8 +30,12 @@ module Agromotivapp
             end
 
             desc 'Admin List'
+            params do
+              optional :page, type: Integer
+              optional :per_page, type: Integer
+            end
             get each_serializer: ::Cms::Admins::AdminSerializer do
-              Admin.all
+              Admin.page(params[:page]).per(params[:per_page])
             end
 
             route_param :id, type: Integer, allow_blank: false, requirements: { id: /[0-9]*/ } do
@@ -93,7 +97,9 @@ module Agromotivapp
                 status 204
 
                 result = ::Cms::Admins::UpdateCurrentAdmin.call(current_resource_owner, params)
-                error!({ message: result.message, errors: result.errors }, result.code) unless result.succeed?
+
+                error!({ message: result.message, errors: result.errors },
+                       result.code) unless result.succeed?
               end
             end
           end

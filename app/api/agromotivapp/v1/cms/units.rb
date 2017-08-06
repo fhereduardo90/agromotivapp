@@ -9,8 +9,12 @@ module Agromotivapp
             end
 
             desc 'Units List'
+            params do
+              optional :page, type: Integer, allow_blank: false
+              optional :per_page, type: Integer, allow_blank: false
+            end
             get each_serializer: ::Cms::Units::UnitAdminSerializer do
-              Unit.all
+              Unit.all.page(params[:page]).per(params[:per_page])
             end
 
             desc 'Create Unit'

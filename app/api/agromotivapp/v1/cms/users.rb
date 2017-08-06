@@ -9,8 +9,12 @@ module Agromotivapp
             end
 
             desc 'Users List'
+            params do
+              optional :page, type: Integer, allow_blank: false
+              optional :per_page, type: Integer, allow_blank: false
+            end
             get each_serializer: ::Users::UserSerializer, include: '**' do
-              User.all
+              User.page(params[:page]).per(params[:per_page])
             end
 
             desc 'Create user'

@@ -9,8 +9,12 @@ module Agromotivapp
             end
 
             desc 'Sellers List'
+            params do
+              optional :page, type: Integer, allow_blank: false
+              optional :per_page, type: Integer, allow_blank: false
+            end
             get each_serializer: ::Sellers::SellerSerializer, include: '**' do
-              Seller.all
+              Seller.page(params[:page]).per(params[:per_page])
             end
 
             desc 'Create Seller'

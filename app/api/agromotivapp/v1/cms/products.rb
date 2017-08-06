@@ -7,8 +7,12 @@ module Agromotivapp::V1::Cms
 
       namespace :products do
         desc 'Product List'
+        params do
+          optional :page, type: Integer, allow_blank: false
+          optional :per_page, type: Integer, allow_blank: false
+        end
         get each_serializer: ::Products::ProductSerializer do
-          Product.all
+          Product.page(params[:page]).per(params[:per_page])
         end
 
         route_param :id, allow_blank: false, type: Integer do
@@ -38,12 +42,16 @@ module Agromotivapp::V1::Cms
       namespace :sellers do
         route_param :seller_id, allow_blank: false, type: Integer do
           namespace :products do
-            desc 'Seller Products'
+            desc 'Seller Products List'
+            params do
+              optional :page, type: Integer, allow_blank: false
+              optional :per_page, type: Integer, allow_blank: false
+            end
             get each_serializer: ::Products::ProductSerializer do
               result = ::Cms::Products::ProductsBySeller.call(params[:seller_id])
 
               if result.succeed?
-                result.response
+                result.response.page(params[:page]).per(params[:per_page])
               else
                 error!({ message: result.message, errors: result.errors }, result.code)
               end
