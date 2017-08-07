@@ -53,7 +53,7 @@ module Agromotivapp
               params do
                 requires :name, allow_blank: false, type: String
                 requires :email, allow_blank: false, regexp: Devise::email_regexp, type: String
-                requires :password, allow_blank: false, type: String
+                optional :password, allow_blank: false, type: String
                 given :password do
                   requires :password_confirmation, allow_blank: false, type: String
                 end
