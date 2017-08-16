@@ -69,6 +69,10 @@ GEM
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
     concurrent-ruby (1.0.5)
+    connection_pool (2.2.1)
+    delayed_paperclip (3.0.1)
+      activejob (>= 4.2)
+      paperclip (>= 3.3)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     devise (4.3.0)
@@ -166,6 +170,8 @@ GEM
     rack-accept (0.4.5)
       rack (>= 0.4)
     rack-cors (0.4.1)
+    rack-protection (2.0.0)
+      rack
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (5.1.1)
@@ -197,6 +203,7 @@ GEM
     rb-fsevent (0.9.8)
     rb-inotify (0.9.8)
       ffi (>= 0.5.0)
+    redis (3.3.3)
     responders (2.4.0)
       actionpack (>= 4.2.0, < 5.3)
       railties (>= 4.2.0, < 5.3)
@@ -210,6 +217,11 @@ GEM
       unicode-display_width (~> 1.0, >= 1.0.1)
     ruby-progressbar (1.8.1)
     ruby_dep (1.5.0)
+    sidekiq (5.0.4)
+      concurrent-ruby (~> 1.0)
+      connection_pool (~> 2.2, >= 2.2.0)
+      rack-protection (>= 1.5.0)
+      redis (~> 3.3, >= 3.3.3)
     sixarm_ruby_unaccent (1.1.2)
     spring (2.0.2)
       activesupport (>= 4.2)
@@ -248,6 +260,7 @@ DEPENDENCIES
   api-pagination
   aws-sdk (~> 2)
   byebug
+  delayed_paperclip
   devise
   doorkeeper
   dotenv-rails
@@ -265,6 +278,7 @@ DEPENDENCIES
   rails (~> 5.1.1)
   rolify
   rubocop
+  sidekiq (= 5.0.4)
   spring
   spring-watcher-listen (~> 2.0.0)
   store_base_sti_class

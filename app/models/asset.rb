@@ -3,11 +3,14 @@ class Asset < ApplicationRecord
 
   UNIQUE_ATTACHABLE_CLASSES = %w(User Seller Category).freeze
 
-  has_attached_file :image, path: ':class/:attachable_type/:attachable_id/:style/:id/:filename'
+  has_attached_file :image, path: ':class/:attachable_type/:attachable_id/:style/:id/:filename',
+                    styles: { high: '1080x1080#', medium: '640x640#', thumbnail: '320x320#' }
   validates_attachment :image,
                        content_type: { content_type: ['image/jpeg', 'image/png'] },
                        size: { in: 0..3.megabytes },
                        presence: true
+
+  process_in_background :image, only_process: [:high, :medium, :thumbnail]
 
   validates :attachable_id, uniqueness: {
     scope: :attachable_type,

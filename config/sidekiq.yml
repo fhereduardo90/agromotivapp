@@ -1,0 +1,8 @@
+development:
+  :concurrency: 25
+production:
+  :concurrency: 10
+:queues:
+  - [paperclip, 3]
+  - [mailers, 2]
+  - [default]
