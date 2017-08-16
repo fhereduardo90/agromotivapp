@@ -79,6 +79,23 @@ module Agromotivapp
                 error!({ message: result.message, errors: result.errors },
                        result.code) unless result.succeed?
               end
+
+              namespace :products do
+                desc 'Category Products'
+                params do
+                  optional :page, type: Integer, allow_blank: false
+                  optional :per_page, type: Integer, allow_blank: false
+                end
+                get each_serializer: ::Products::ProductSerializer do
+                  result = ::Categories::FindCategoryProducts.call(params[:id])
+
+                  if result.succeed?
+                    paginate result.response.page(params[:page]).per(params[:per_page])
+                  else
+                    error!({ message: result.message, errors: result.errors }, result.code)
+                  end
+                end
+              end
             end
           end
         end
