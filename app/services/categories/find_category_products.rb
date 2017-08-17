@@ -14,7 +14,7 @@ module Categories
       return error(result) unless result.succeed?
 
       success(result.response.products
-                .includes(:active_assets, products_units: [:unit]))
+                .includes(:seller, :active_assets, products_units: [:unit]))
     rescue => e
       return error(response: e, title: ERROR_TITLE, message: e.message, code: 404)
     end

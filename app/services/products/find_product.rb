@@ -9,7 +9,9 @@ module Products
     end
 
     def call
-      product = Product.find_by(id: id)
+      product = Product
+                  .includes(:seller, :category, :active_assets, products_units: [:unit])
+                  .find_by(id: id)
 
       return error(response: product, message: 'Product not found',
                    code: 404, title: ERROR_TITLE) unless product

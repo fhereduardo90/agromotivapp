@@ -12,7 +12,9 @@ module Agromotivapp::V1::Cms
           optional :per_page, type: Integer, allow_blank: false
         end
         get each_serializer: ::Products::ProductSerializer do
-          paginate Product.page(params[:page]).per(params[:per_page])
+          paginate Product
+                     .includes(:active_assets, :category, :seller, products_units: [:unit])
+                     .page(params[:page]).per(params[:per_page])
         end
 
         route_param :id, allow_blank: false, type: Integer do

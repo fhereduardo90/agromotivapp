@@ -15,7 +15,8 @@ module Cms
         return error(response: seller, title: ERROR_TITLE, code: 404,
                      message: 'Seller not found') unless seller
 
-        success(seller.products)
+        success(seller.products
+                  .includes(:seller, :category, :active_assets, products_units: [:unit]))
       rescue => e
         return error(reponse: e, title: ERROR_TITLE, message: e.message, code: 422)
       end
