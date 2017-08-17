@@ -8,8 +8,6 @@ Rails.application.routes.draw do
     end
   end
 
-  get '/apidoc', to: redirect('/swagger/index.html?url=/swagger_doc')
-
   mount Agromotivapp::API => '/'
-  mount GrapeSwaggerRails::Engine => '/swagger'
+  mount GrapeSwaggerRails::Engine => '/apidoc'
 end
