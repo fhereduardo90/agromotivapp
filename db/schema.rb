@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170807155221) do
+ActiveRecord::Schema.define(version: 20170818002309) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -125,6 +125,7 @@ ActiveRecord::Schema.define(version: 20170807155221) do
     t.string "type"
     t.bigint "state_id"
     t.bigint "city_id"
+    t.string "store_name"
     t.index ["city_id"], name: "index_people_on_city_id"
     t.index ["reset_password_token"], name: "index_people_on_reset_password_token", unique: true
     t.index ["state_id"], name: "index_people_on_state_id"
@@ -136,6 +137,15 @@ ActiveRecord::Schema.define(version: 20170807155221) do
     t.index ["person_id", "role_id"], name: "index_people_roles_on_person_id_and_role_id"
     t.index ["person_id"], name: "index_people_roles_on_person_id"
     t.index ["role_id"], name: "index_people_roles_on_role_id"
+  end
+
+  create_table "pg_search_documents", force: :cascade do |t|
+    t.text "content"
+    t.string "searchable_type"
+    t.bigint "searchable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable_type_and_searchable_id"
   end
 
   create_table "products", force: :cascade do |t|
