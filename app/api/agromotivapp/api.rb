@@ -1,3 +1,4 @@
+require 'doorkeeper/grape/helpers'
 require 'grape-swagger'
 
 module Agromotivapp
@@ -16,12 +17,25 @@ module Agromotivapp
     end
   end
 
+  module SharedParams
+    extend Grape::API::Helpers
+
+    params :pagination do
+      optional :page, type: Integer, allow_blank: false
+      optional :per_page, type: Integer, allow_blank: false
+    end
+
+    params :search do
+      optional :q, type: String, allow_blank: false
+    end
+  end
+
   class API < Grape::API
     format :json
     formatter :json, Grape::Formatter::ActiveModelSerializers
 
     mount Agromotivapp::V1::Root
-    mount Agromotivapp::V1::Cms::Root
+    mount Agromotivapp::V1::CMS::Root
 
     add_swagger_documentation mount_path: '/swagger_doc',
                              in: 'json',

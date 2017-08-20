@@ -1,7 +1,7 @@
 module Agromotivapp
   module V1
-    module Cms
-      class Units < ::Agromotivapp::V1::Root
+    module CMS
+      class Units < Base
         namespace :cms do
           namespace :units do
             before do
@@ -10,8 +10,7 @@ module Agromotivapp
 
             desc 'Units List'
             params do
-              optional :page, type: Integer, allow_blank: false
-              optional :per_page, type: Integer, allow_blank: false
+              use :pagination
             end
             get each_serializer: ::Cms::Units::UnitAdminSerializer do
               paginate Unit.page(params[:page]).per(params[:per_page])
@@ -56,8 +55,7 @@ module Agromotivapp
 
                 result = ::Cms::Units::UpdateUnit.call(current_resource_owner, params)
 
-                error!({ message: result.message, errors: result.errors },
-                       result.code) unless result.succeed?
+                error!({ message: result.message, errors: result.errors }, result.code) unless result.succeed?
               end
 
               desc 'Delete Unit'
@@ -66,8 +64,7 @@ module Agromotivapp
 
                 result = ::Cms::Units::DeleteUnit.call(params[:id])
 
-                error!({ message: result.message, errors: result.errors },
-                       result.code) unless result.succeed?
+                error!({ message: result.message, errors: result.errors }, result.code) unless result.succeed?
               end
             end
           end

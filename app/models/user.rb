@@ -18,4 +18,8 @@ class User < Person
     return false unless email_changed?
     User.with_role(:user).select(:id).find_by(email: email).present?
   end
+
+  def store_name=(value)
+    super(value)
+  end
 end

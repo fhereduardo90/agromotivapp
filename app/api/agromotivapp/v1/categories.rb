@@ -1,6 +1,6 @@
 module Agromotivapp
   module V1
-    class Categories < Root
+    class Categories < Base
       namespace :categories do
         before do
           doorkeeper_authorize! :seller
@@ -8,8 +8,7 @@ module Agromotivapp
 
         desc 'Categories List'
         params do
-          optional :page, type: Integer, allow_blank: false
-          optional :per_page, type: Integer, allow_blank: false
+          use :pagination
         end
         get each_serializer: ::Categories::CategorySerializer do
           paginate Category.page(params[:page]).per(params[:per_page])
@@ -30,14 +29,21 @@ module Agromotivapp
           namespace :products do
             desc 'Category Products'
             params do
-              optional :page, type: Integer, allow_blank: false
-              optional :per_page, type: Integer, allow_blank: false
+              use :pagination
+              use :search
             end
             get each_serializer: ::Products::ProductSerializer do
               result = ::Categories::FindCategoryProducts.call(params[:id])
 
               if result.succeed?
-                paginate result.response.page(params[:page]).per(params[:per_page])
+                if params[:q].present?
+                  paginate result.response
+                             .full_text_search(params[:q])
+                             .page(params[:page])
+                             .per(params[:per_page])
+                else
+                  paginate result.response.page(params[:page]).per(params[:per_page])
+                end
               else
                 error!({ message: result.message, errors: result.errors }, result.code)
               end

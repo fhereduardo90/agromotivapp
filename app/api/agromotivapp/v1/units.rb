@@ -1,6 +1,6 @@
 module Agromotivapp
   module V1
-    class Units < Root
+    class Units < Base
       namespace :units do
         before do
           doorkeeper_authorize! :seller
@@ -8,8 +8,7 @@ module Agromotivapp
 
         desc 'Units List'
         params do
-          optional :page, type: Integer, allow_blank: false
-          optional :per_page, type: Integer, allow_blank: false
+          use :pagination
         end
         get each_serializer: ::Units::UnitSerializer do
           paginate Unit.page(params[:page]).per(params[:per_page])

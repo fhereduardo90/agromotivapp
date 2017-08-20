@@ -4,13 +4,17 @@ module Cms
       attribute :seller_id, Integer, writer: :private
       attribute :product_id, Integer, writer: :private
       attribute :product_params, Hash, writer: :private
+      attribute :units, Array, writer: :private
+      attribute :images, Array, writer: :private
 
       ERROR_TITLE = 'Product Error'.freeze
 
       def initialize(options = {})
         self.seller_id = options[:seller_id]
         self.product_id = options[:id]
-        self.product_params = options.except!(:seller_id, :product_id)
+        self.images = options[:images]
+        self.units = options[:units]
+        self.product_params = options.except!(:seller_id, :product_id, :images, :units)
       end
 
       def call
@@ -28,10 +32,10 @@ module Cms
         new_images = []
 
         ActiveRecord::Base.transaction do
-          product.update!(product_params.except('images', 'units'))
+          product.update!(product_params)
 
-          unless product_params['units'].blank?
-            new_units = product_params['units'].map { |unit|
+          if units.present?
+            new_units = units.map { |unit|
               {
                 unit_id: unit['unit_id'],
                 price: unit['price'],
@@ -41,12 +45,11 @@ module Cms
             }
 
             product.products_units.destroy_all
-            puts new_units.inspect
             product.products_units.create!(new_units)
           end
 
-          unless product_params['images'].blank?
-            new_images = product_params['images'].map{ |image|
+          if images.present?
+            new_images = images.map{ |image|
               { image: ActionDispatch::Http::UploadedFile.new(image['file']) }
             }
 

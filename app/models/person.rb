@@ -5,8 +5,8 @@ class Person < ApplicationRecord
   belongs_to :city, optional: true
 
   validates :email, format: Devise::email_regexp
-  validates :state, presence: true, unless: -> { self.city.present? }
-  validates :city, presence: true, unless: -> { self.state.present? }
+  validates :state, presence: true, if: -> { self.city.blank? }
+  validates :city, presence: true, if: -> { self.state.blank? }
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable

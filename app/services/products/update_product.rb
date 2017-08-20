@@ -2,29 +2,34 @@ module Products
   class UpdateProduct < ::BaseService
     attribute :current_user, Seller, writer: :private
     attribute :id, Integer, writer: :private
+    attribute :images, Array, writer: :private
     attribute :product_params, Hash, writer: :private
+    attribute :units, Array, writer: :private
 
     ERROR_TITLE = 'Product Error'.freeze
 
     def initialize(current_user, options = {})
       self.current_user = current_user
       self.id = options[:id]
-      self.product_params = options.except!(:id)
+      self.images = options[:images]
+      self.units = options[:units]
+      self.product_params = options.except!(:id, :images, :units)
     end
 
     def call
       new_units = []
       new_images = []
+
       product = current_user.products.find_by(id: id)
 
       return error(response: product, message: 'Product not found', code: 404,
                    title: ERROR_TITLE) unless product
 
       ActiveRecord::Base.transaction do
-        product.update!(product_params.except('images', 'units'))
+        product.update!(product_params)
 
-        unless product_params['units'].blank?
-          new_units = product_params['units'].map { |unit|
+        if units.present?
+          new_units = units.map { |unit|
             {
               unit_id: unit['unit_id'],
               price: unit['price'],
@@ -37,8 +42,8 @@ module Products
           product.products_units.create!(new_units)
         end
 
-        unless product_params['images'].blank?
-          new_images = product_params['images'].map{ |image|
+        if images.present?
+          new_images = images.map{ |image|
             { image: ActionDispatch::Http::UploadedFile.new(image['file']) }
           }
 

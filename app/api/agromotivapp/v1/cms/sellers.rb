@@ -1,7 +1,7 @@
 module Agromotivapp
   module V1
-    module Cms
-      class Sellers < ::Agromotivapp::V1::Root
+    module CMS
+      class Sellers < Base
         namespace :cms do
           namespace :sellers do
             before do
@@ -10,8 +10,7 @@ module Agromotivapp
 
             desc 'Sellers List'
             params do
-              optional :page, type: Integer, allow_blank: false
-              optional :per_page, type: Integer, allow_blank: false
+              use :pagination
             end
             get each_serializer: ::Sellers::SellerSerializer, include: '**' do
               paginate Seller.page(params[:page]).per(params[:per_page])
@@ -21,6 +20,7 @@ module Agromotivapp
             params do
               optional :image, type: File
               requires :name, allow_blank: false, type: String
+              optional :store_name, allow_blank: false, type: String
               requires :email, allow_blank: false, regexp: Devise::email_regexp, type: String
               requires :address, allow_blank: false, type: String
               optional :phone, allow_blank: false, type: String
@@ -53,6 +53,7 @@ module Agromotivapp
               params do
                 optional :image, type: File
                 optional :name, allow_blank: false, type: String
+                optional :store_name, allow_blank: false, type: String
                 optional :email, regexp: Devise::email_regexp, allow_blank: false, type: String
                 optional :address, allow_blank: false, type: String
                 optional :phone, allow_blank: false, type: String
@@ -73,8 +74,7 @@ module Agromotivapp
 
                 result = ::Cms::Sellers::UpdateSeller.call(params)
 
-                error!({ message: result.message, errors: result.errors },
-                       result.code) unless result.succeed?
+                error!({ message: result.message, errors: result.errors }, result.code) unless result.succeed?
               end
 
               desc 'Seller Detail'
@@ -94,8 +94,7 @@ module Agromotivapp
 
                 result = ::Cms::Sellers::DeleteSeller.call(params[:id])
 
-                error!({ message: result.message, errors: result.errors },
-                       result.code) unless result.succeed?
+                error!({ message: result.message, errors: result.errors }, result.code) unless result.succeed?
               end
             end
           end

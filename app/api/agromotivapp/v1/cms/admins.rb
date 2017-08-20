@@ -1,7 +1,7 @@
 module Agromotivapp
   module V1
-    module Cms
-      class Admins < ::Agromotivapp::V1::Root
+    module CMS
+      class Admins < Base
         namespace :cms do
           namespace :admins do
             before do
@@ -31,8 +31,7 @@ module Agromotivapp
 
             desc 'Admin List'
             params do
-              optional :page, type: Integer
-              optional :per_page, type: Integer
+              use :pagination
             end
             get each_serializer: ::Cms::Admins::AdminSerializer do
               paginate Admin.page(params[:page]).per(params[:per_page])
@@ -63,8 +62,7 @@ module Agromotivapp
 
                 result = ::Cms::Admins::UpdateAdmin.call(params)
 
-                error!({ message: result.message, errors: result.errors },
-                       result.code) unless result.succeed?
+                error!({ message: result.message, errors: result.errors }, result.code) unless result.succeed?
               end
 
               desc 'Delete Admin'
@@ -73,8 +71,7 @@ module Agromotivapp
 
                 result = ::Cms::Admins::DeleteAdmin.call(current_resource_owner, params[:id])
 
-                error!({ message: result.message, errors: result.errors },
-                       result.code) unless result.succeed?
+                error!({ message: result.message, errors: result.errors }, result.code) unless result.succeed?
               end
             end
 
@@ -98,8 +95,7 @@ module Agromotivapp
 
                 result = ::Cms::Admins::UpdateCurrentAdmin.call(current_resource_owner, params)
 
-                error!({ message: result.message, errors: result.errors },
-                       result.code) unless result.succeed?
+                error!({ message: result.message, errors: result.errors }, result.code) unless result.succeed?
               end
             end
           end

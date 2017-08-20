@@ -5,11 +5,7 @@ module Sellers
 
     def call
       token = nil
-      seller = Seller.new(
-        name: name, email: email, address: address, phone: phone,
-        password: password, password_confirmation: password_confirmation,
-        city_id: city_id, state_id: state_id
-      )
+      seller = Seller.new(user_params)
 
       ActiveRecord::Base.transaction do
         seller.save!
