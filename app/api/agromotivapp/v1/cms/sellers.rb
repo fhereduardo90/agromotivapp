@@ -11,9 +11,16 @@ module Agromotivapp
             desc 'Sellers List'
             params do
               use :pagination
+              use :search
             end
             get each_serializer: ::Sellers::SellerSerializer, include: '**' do
-              paginate Seller.page(params[:page]).per(params[:per_page])
+              if params[:q].present?
+                paginate Seller.full_text_search(params[:q])
+                           .page(params[:page])
+                           .per(params[:per_page])
+              else
+                paginate Seller.page(params[:page]).per(params[:per_page])
+              end
             end
 
             desc 'Create Seller'

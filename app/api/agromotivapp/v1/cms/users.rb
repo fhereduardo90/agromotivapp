@@ -11,9 +11,16 @@ module Agromotivapp
             desc 'Users List'
             params do
               use :pagination
+              use :search
             end
             get each_serializer: ::Users::UserSerializer, include: '**' do
-              paginate User.page(params[:page]).per(params[:per_page])
+              if params[:q].present?
+                paginate User.full_text_search(params[:q])
+                           .page(params[:page])
+                           .per(params[:per_page])
+              else
+                paginate User.page(params[:page]).per(params[:per_page])
+              end
             end
 
             desc 'Create user'

@@ -1,4 +1,10 @@
 class User < Person
+  include PgSearch
+
+  pg_search_scope :full_text_search, against: [:name, :email], using: {
+    tsearch: { prefix: true }
+  }
+
   has_many :assets, -> { where attachable_type: 'User' },
            foreign_type: :attachable_type, foreign_key: :attachable_id, dependent: :destroy
   has_one :asset,  -> { where attachable_type: 'User', deleted: false },
