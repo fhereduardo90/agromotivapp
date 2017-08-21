@@ -81,12 +81,20 @@ module Agromotivapp
                 desc 'Category Products'
                 params do
                   use :pagination
+                  use :search
                 end
                 get each_serializer: ::Products::ProductSerializer do
                   result = ::Categories::FindCategoryProducts.call(params[:id])
 
                   if result.succeed?
-                    paginate result.response.page(params[:page]).per(params[:per_page])
+                    if params[:q].present?
+                      paginate result.response
+                                 .full_text_search(params[:q])
+                                 .page(params[:page])
+                                 .per(params[:per_page])
+                    else
+                      paginate result.response.page(params[:page]).per(params[:per_page])
+                    end
                   else
                     error!({ message: result.message, errors: result.errors }, result.code)
                   end
