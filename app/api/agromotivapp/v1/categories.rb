@@ -2,10 +2,6 @@ module Agromotivapp
   module V1
     class Categories < Base
       namespace :categories do
-        before do
-          doorkeeper_authorize! :seller
-        end
-
         desc 'Categories List'
         params do
           use :pagination
