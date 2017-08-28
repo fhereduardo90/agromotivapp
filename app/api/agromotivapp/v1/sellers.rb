@@ -2,6 +2,11 @@ module Agromotivapp
   module V1
     class Sellers < Base
       namespace :sellers do
+        desc 'Seller List'
+        get serializer: ::Sellers::SellerSerializer do
+          Seller.all
+        end
+
         desc 'Create seller'
         params do
           optional :image, type: File
@@ -27,6 +32,36 @@ module Agromotivapp
             result.response
           else
             error!({ message: result.message, errors: result.errors }, result.code)
+          end
+        end
+
+        route_param :id, allow_blank: false, type: Integer do
+          desc 'Seller Detail'
+          get serializer: ::Sellers::SellerSerializer do
+            result = ::Sellers::FindSeller.call(params[:id])
+
+            if result.succeed?
+              result.response
+            else
+              error!({ message: result.message, errors: result.errors }, result.code)
+            end
+          end
+
+          namespace :products do
+            desc 'Seller Products'
+            params do
+              use :pagination
+              use :search
+            end
+            get serializer: ::Products::ProductSerializer do
+              result = ::Sellers::Products.call(params[:id])
+
+              if result.succeed?
+                result.response
+              else
+                error!({ message: result.message, errors: result.errors }, result.code)
+              end
+            end
           end
         end
 
