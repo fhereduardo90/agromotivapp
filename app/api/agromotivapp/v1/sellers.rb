@@ -35,7 +35,7 @@ module Agromotivapp
           end
         end
 
-        route_param :id, allow_blank: false, type: Integer do
+        route_param :id, allow_blank: false, type: Integer, requirements: { id: /[0-9]*/ } do
           desc 'Seller Detail'
           get serializer: ::Sellers::SellerSerializer do
             result = ::Sellers::FindSeller.call(params[:id])
