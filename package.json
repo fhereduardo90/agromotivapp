@@ -1,0 +1,21 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "description": "This repo contains a web application codebase. Read instructions on how to install.",
+  "main": "index.js",
+  "engines": {
+    "node": "8.4.0"
+  },
+  "scripts": {
+    "build": "cd client && npm run build", # not sure what to put here but this gets me past build failure
+    "deploy": "cp -a client/build/. public",
+    "heroku-postbuild": "npm run build && npm run deploy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://myrepo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://myhomepage#readme"
+}
