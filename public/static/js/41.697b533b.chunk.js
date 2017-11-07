@@ -1,0 +1,1 @@
+webpackJsonp([41],{418:function(e,n,t){"use strict";Object.defineProperty(n,"__esModule",{value:!0});var i=t(0),a=t.n(i),l=function(e){var n=e.unit;return n.unit?a.a.createElement("div",{className:"price ellipsis"},n.price," ",a.a.createElement("span",null,"\xd7")," ",n.unit.description):null};n.default=l}});
