@@ -7,7 +7,10 @@ Rails.application.routes.draw do
       skip_controllers :applications, :authorized_applications, :authorizations
     end
   end
-  
-  mount Agromotivapp::API => '/'
+
+  constraints subdomain: 'api' do
+    mount Agromotivapp::API => '/'
+  end
+
   mount GrapeSwaggerRails::Engine => '/apidoc'
 end
