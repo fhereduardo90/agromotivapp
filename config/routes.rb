@@ -7,7 +7,7 @@ Rails.application.routes.draw do
       skip_controllers :applications, :authorized_applications, :authorizations
     end
   end
-
+  
   mount Agromotivapp::API => '/'
   mount GrapeSwaggerRails::Engine => '/apidoc'
 end

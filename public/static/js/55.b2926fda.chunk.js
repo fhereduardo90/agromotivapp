@@ -1,1 +1,0 @@
-webpackJsonp([55],{1098:function(t,a,e){t.exports=e.p+"static/media/pattern-size2.f9a1dc1f.svg"}});
