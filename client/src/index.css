@@ -1,0 +1,132 @@
+.ant-layout-content {
+  overflow: initial;
+}
+
+.ant-layout-header {
+  position: relative;
+}
+
+.ant-layout-header .ant-btn-group{
+  position: absolute;
+  right: 15px;
+}
+
+.ant-breadcrumb {
+  margin: 15px 15px 0;
+}
+
+.gutter-box {
+padding: 5px 0;
+}
+
+.divider {
+  margin: 15px 0;
+  border-bottom: 1px dashed #eaeaea;
+}
+
+.invisible-divider {
+  margin: 10px 0;
+}
+
+.user-card {
+  position: relative;
+  padding-left: 60px;
+}
+
+.user-card .avatar {
+  position: absolute;
+  left: 0;
+}
+
+.user-card .meta {
+  display: block;
+}
+
+.danger-zone {
+  padding: 10px;
+  background-color: #fffaeb;
+  border: 1px dashed #ffc311;
+}
+
+.product-scroller {
+  position: relative;
+  overflow: auto;
+}
+
+.scroller-button{
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 50px;
+  background-color: #fff;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+  z-index: 1;
+  border-left: 2px solid #ececec;
+}
+
+.product-scroller.boxed {
+  background-color: #ececec;
+  border: 2px solid #ececec;
+  border-radius: 3px;
+  margin-top: 10px;
+}
+
+.product-scroller .scroller-content{
+  overflow: auto;
+}
+
+.clearfix {
+  display: block;
+  clear: both;
+}
+
+body .ant-menu.ant-menu-dark .ant-menu-item-selected {
+  background-color: #61a753;
+}
+
+body .ant-menu-horizontal > .ant-menu-item > a:hover,
+body .ant-menu-horizontal > .ant-menu-submenu > a:hover {
+  color: #61a753;
+}
+
+body .ant-menu-horizontal > .ant-menu-item:hover,
+body .ant-menu-horizontal > .ant-menu-submenu:hover,
+body .ant-menu-horizontal > .ant-menu-item-active,
+body .ant-menu-horizontal > .ant-menu-submenu-active,
+body .ant-menu-horizontal > .ant-menu-item-open,
+body .ant-menu-horizontal > .ant-menu-submenu-open,
+body .ant-menu-horizontal > .ant-menu-item-selected,
+body .ant-menu-horizontal > .ant-menu-submenu-selected {
+  border-bottom: 2px solid #61a753;;
+  color: #61a753;;
+}
+
+body .ant-menu > .ant-menu-item-divider {
+  margin-top: 50px;
+  margin-bottom: 15px;
+  background-color: #5d5c5c;
+}
+
+body .ant-upload-select-picture-card i {
+  font-size: 28px;
+  color: #999;
+}
+
+body .ant-upload-select-picture-card .ant-upload-text {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #666;
+}
+
+.ant-layout {
+  min-height: 100vh;
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
