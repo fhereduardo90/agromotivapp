@@ -80,9 +80,7 @@
     "dev": "node scripts/start.js",
     "start": "node static-server.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom",
-    "deploy": "cp -a build/. public",
-    "heroku-postbuild": "npm run build && npm run deploy"
+    "test": "node scripts/test.js --env=jsdom"
   },
   "jest": {
     "collectCoverageFrom": ["src/**/*.{js,jsx}"],
