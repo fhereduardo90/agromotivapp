@@ -1,0 +1,1 @@
+webpackJsonp([50],{1105:function(t,e,o){t.exports=o.p+"static/media/fontawesome-webfont.1dc35d25.ttf"}});

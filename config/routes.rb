@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :admins
+  devise_for :admins, skip: :all
   devise_for :users, skip: :all
 
   scope 'v1' do
@@ -13,4 +13,7 @@ Rails.application.routes.draw do
   end
 
   mount GrapeSwaggerRails::Engine => '/apidoc'
+
+  root to: 'welcome#index'
+  get '*path', to: 'welcome#index'
 end
