@@ -20,7 +20,7 @@ class LoginPage extends Component {
   }
 
   componentWillMount() {
-    const { dispatch, history, session, route, location } = this.props;
+    const { dispatch, history, session, location } = this.props;
 
     if ( localStorage.token && !session.loggedIn ) {
       dispatch(getUserData(err => {

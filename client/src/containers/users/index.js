@@ -21,7 +21,7 @@ class Users extends Component {
     const currentKey = `${ current }s`;
 
     if ( !current ) {
-      history.push( this.props.route('usersList') +  '/type/user');
+      history.replace( this.props.route('usersList') +  '/type/user');
     } else {
       this.setState({ current }, () => {
         this.fetch(currentKey);

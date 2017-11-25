@@ -254,22 +254,25 @@ class UserForm extends Component {
                 </div>
               </Conditional>
 
-              <Conditional condition={ type !== 'admins' } >
+              <Conditional condition={ !['admins', 'users'].includes(type) } >
+                <FormItem
+                  {...formItemLayout}
+                  label="Telefono"
+                >
+                  {getFieldDecorator('phone', {
+                    initialValue: user.data ? user.data.phone : '',
+                    rules: [
+                      { required: type !== 'admins', message: 'Telefono requerido' },
+                      { min: 7, message: 'Minimo de caracteres es 7' },
+                    ]
+                  })(
+                    <Input style={{ width: '100%' }} placeholder="7000-0000" />
+                  )}
+                </FormItem>
+              </Conditional>
+              
+              <Conditional condition={ !['admins'].includes(type) } >
                 <div>
-                  <FormItem
-                    {...formItemLayout}
-                    label="Telefono"
-                  >
-                    {getFieldDecorator('phone', {
-                      initialValue: user.data ? user.data.phone : '',
-                      rules: [
-                        { required: type !== 'admins', message: 'Telefono requerido' },
-                        { min: 7, message: 'Minimo de caracteres es 7' },
-                      ]
-                    })(
-                      <Input style={{ width: '100%' }} placeholder="7000-0000" />
-                    )}
-                  </FormItem>
                   <FormItem
                     {...formItemLayout}
                     label="Depto. / Municipio"

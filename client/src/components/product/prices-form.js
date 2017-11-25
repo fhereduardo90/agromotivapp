@@ -84,7 +84,7 @@ const PricesForm = ({
                                   { max: 15, message: 'Maximo 15 letras' },
                                 ],
                               })(
-                                <Input placeholder="Nombre" />
+                                <Input placeholder="Titulo" />
                               )}
                             </FormItem>
                           </td>
@@ -128,7 +128,7 @@ const PricesForm = ({
                                 ],
                               })(
                                 <Select label="Unidad" style={{ minWidth: 100 }}>
-                                    <Option value="">Unidad</Option> 
+                                    <Option value="">Unidad de medida</Option> 
                                   { units.data.map( unit => {
                                     return <Option key={ unit.id } value={ unit.id + [] }>{ unit.name }</Option>
                                   } ) }  
