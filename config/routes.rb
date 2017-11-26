@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   devise_for :admins, skip: :all
   devise_for :users, skip: :all
+  devise_for :sellers, skip: :all
 
   scope 'v1' do
     use_doorkeeper do
@@ -10,10 +11,11 @@ Rails.application.routes.draw do
 
   constraints subdomain: 'api' do
     mount Agromotivapp::API => '/'
+    mount GrapeSwaggerRails::Engine => '/apidoc'
   end
 
-  mount GrapeSwaggerRails::Engine => '/apidoc'
-
-  root to: 'welcome#index'
-  get '*path', to: 'welcome#index'
+  constraints subdomain: '' do
+    root to: 'welcome#index'
+    get '*path', to: 'welcome#index'
+  end
 end

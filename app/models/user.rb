@@ -12,6 +12,10 @@ class User < Person
 
   validates :email, uniqueness: true, if: :valid_user?
 
+  def devise_mailer
+    AgromotivaMailer
+  end
+
   protected
 
   def assign_default_role

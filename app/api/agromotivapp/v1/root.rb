@@ -16,6 +16,7 @@ module Agromotivapp
       mount Agromotivapp::V1::Units
       mount Agromotivapp::V1::Categories
       mount Agromotivapp::V1::Oauth
+      mount Agromotivapp::V1::Passwords
     end
   end
 end

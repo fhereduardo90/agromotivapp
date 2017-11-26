@@ -19,6 +19,10 @@ class Seller < Person
     add_role(:seller) if roles.blank?
   end
 
+  def devise_mailer
+    AgromotivaMailer
+  end
+
   private
 
   def valid_seller?
