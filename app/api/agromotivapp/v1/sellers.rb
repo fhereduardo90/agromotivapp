@@ -194,6 +194,50 @@ module Agromotivapp
                   error!({ message: result.message, errors: result.errors }, result.code) unless result.succeed?
                 end
               end
+
+              route_param :product_id, allow_blank: false, type: Integer do
+                namespace :images do
+                  desc 'Add new Product Image'
+                  params do
+                    requires :image, type: File, allow_blank: false
+                  end
+                  post serializer: ::Products::ProductSerializer do
+                    status 201
+
+                    result = ::Products::AddNewImage.call(
+                      current_resource_owner,
+                      params[:product_id],
+                      params[:image]
+                    )
+
+                    if result.succeed?
+                      result.response
+                    else
+                      error!({ message: result.message, errors: result.errors }, result.code)
+                    end
+                  end
+
+                  desc 'Delete Product Image'
+                  params do
+                    requires :id, type: Integer, allow_blank: false
+                  end
+                  delete ':id' do
+                    status 204
+
+                    result = ::Products::DeleteImage.call(
+                      current_resource_owner,
+                      params[:product_id],
+                      params[:id]
+                    )
+
+                    if result.succeed?
+                      result.response
+                    else
+                      error!({ message: result.message, errors: result.errors }, result.code)
+                    end
+                  end
+                end
+              end
             end
           end
         end
