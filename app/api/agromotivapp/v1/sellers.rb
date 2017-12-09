@@ -3,7 +3,7 @@ module Agromotivapp
     class Sellers < Base
       namespace :sellers do
         desc 'Seller List'
-        get serializer: ::Sellers::SellerSerializer do
+        get serializer: ::Sellers::SellerSerializer, include: '**' do
           Seller.all
         end
 
@@ -37,7 +37,7 @@ module Agromotivapp
 
         route_param :id, allow_blank: false, type: Integer, requirements: { id: /[0-9]*/ } do
           desc 'Seller Detail'
-          get serializer: ::Sellers::SellerSerializer do
+          get serializer: ::Sellers::SellerSerializer, include: '**' do
             result = ::Sellers::FindSeller.call(params[:id])
 
             if result.succeed?
@@ -72,7 +72,7 @@ module Agromotivapp
 
           namespace :me do
             desc 'Seller Profile'
-            get serializer: ::Sellers::SellerSerializer do
+            get serializer: ::Sellers::SellerSerializer, include: '**' do
               current_resource_owner
             end
 
