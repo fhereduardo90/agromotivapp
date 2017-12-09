@@ -14,6 +14,10 @@ Rails.application.routes.draw do
     mount GrapeSwaggerRails::Engine => '/apidoc'
   end
 
+  constraints subdomain: 'agromotivapp' do
+    mount GrapeSwaggerRails::Engine => '/apidoc'
+  end
+
   constraints subdomain: '' do
     root to: 'welcome#index'
     get '*path', to: 'welcome#index'
