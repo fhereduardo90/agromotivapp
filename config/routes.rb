@@ -1,3 +1,5 @@
+require 'agromotiva_subdomain'
+
 Rails.application.routes.draw do
   devise_for :admins, skip: :all
   devise_for :users, skip: :all
@@ -9,12 +11,8 @@ Rails.application.routes.draw do
     end
   end
 
-  constraints subdomain: 'api' do
+  constraints AgromotivaSubdomain do
     mount Agromotivapp::API => '/'
-    mount GrapeSwaggerRails::Engine => '/apidoc'
-  end
-
-  constraints subdomain: 'agromotivapp' do
     mount GrapeSwaggerRails::Engine => '/apidoc'
   end
 
