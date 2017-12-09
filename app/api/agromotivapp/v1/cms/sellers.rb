@@ -69,7 +69,8 @@ module Agromotivapp
                 optional :city_id, allow_blank: false, type: Integer
                 mutually_exclusive :state_id, :city_id
                 given :password do
-                  requires :password_confirmation, allow_blank: false, type: String
+                  requires :password_confirmation, allow_blank: false, type: String,
+                  documentation: { required: false, type: 'password' }
                 end
               end
               put do
